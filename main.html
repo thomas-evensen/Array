@@ -1,0 +1,131 @@
+<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
+
+<html>
+<head>
+<title>ARRAY * A DHTML DEMO BY DRAFTINGZUP & ZYBERPUNX</title>
+
+
+<style type="text/css">
+
+a	{
+
+font-family: arial,verdana;
+font-size: 7pt;
+color: #333333; 
+text-decoration: none;
+
+}
+
+a:hover	{
+
+font-family: arial,verdana;
+font-size: 7pt;
+color: #333333; 
+text-decoration: none;
+
+}
+
+
+.cont	{
+
+border-color: #222222;
+border-width: 1px;
+border-style: solid;
+
+
+
+}
+
+
+.text	{
+
+font-family: arial,verdana;
+font-size: 8pt;
+font-weight:bold;
+color: #333333; 
+
+
+
+}
+
+
+</style>
+
+<script language="javascript">
+
+// MACROMEDIA CRAP TO CONTROL THE MUSIC
+
+function MM_findObj(n, d) { //v4.01
+  var p,i,x;  if(!d) d=document; if((p=n.indexOf("?"))>0&&parent.frames.length) {
+    d=parent.frames[n.substring(p+1)].document; n=n.substring(0,p);}
+  if(!(x=d[n])&&d.all) x=d.all[n]; for (i=0;!x&&i<d.forms.length;i++) x=d.forms[i][n];
+  for(i=0;!x&&d.layers&&i<d.layers.length;i++) x=MM_findObj(n,d.layers[i].document);
+  if(!x && d.getElementById) x=d.getElementById(n); return x;
+}
+
+function MM_controlShockwave(objStr,x,cmdName,frameNum) { //v3.0
+  var obj=MM_findObj(objStr);
+  if (obj) eval('obj.'+cmdName+'('+((cmdName=='GotoFrame')?frameNum:'')+')');
+}
+
+
+//var startTIme,endTime,currTime = false;
+
+
+function go()	{
+
+
+startTime = new Date().valueOf();
+
+
+}
+
+function check()	{
+
+currTime = new Date().valueOf();
+
+alert(currTime-startTime);
+
+
+}
+
+
+</script>
+
+
+</head>
+
+<body bgcolor="#111111" text="#ffffff" scroll="no">
+
+
+<div id="flash" style="position:absolute; visibility: hidden;">
+
+    <EMBED src="wasteland.swf" quality=high bgcolor=#000000  WIDTH=50 HEIGHT=50 TYPE="application/x-shockwave-flash" PLUGINSPAGE="http://www.macromedia.com/shockwave/download/index.cgi?P1_Prod_Version=ShockwaveFlash" loop="false" name="music" swliveconnect="true">
+    </EMBED> 
+ 
+
+</div>
+
+
+
+<table width="100%" height="100%">
+<tr>
+	<td valign="middle" align="center">
+		
+	<div class="text">ARRAY * A DHTML DEMO BY DRAFTINGZUP & ZYBERPUNX</div>
+	
+	<iframe class="cont" src="preload.html" name="scene" frameborder="0" scrolling="no" border="0" marginheight="0" marginwidth="0" width="640" height="480"></iframe>
+	
+	<br><br>
+
+	<a href="#" onclick="window.close()">close</a>
+	
+
+
+</td>
+
+</tr>
+</table>
+
+</body>
+</html>

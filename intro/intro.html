@@ -1,0 +1,661 @@
+
+<html>
+<head>
+<title> intro </title>
+
+
+<style type="text/css">
+
+.letter	{
+
+position: absolute;
+overflow: hidden;
+width: 2px;
+height:2px;
+background: #ffffff;
+
+
+}
+
+</style>
+
+<script language="javascript">
+
+var d = document;
+
+
+word = new Array();
+
+
+
+word[0] = new Array();
+word[0]['x'] = new Array();
+word[0]['y'] = new Array();
+word[0]['pattern'] =	 new Array(
+										'####################',
+										'',
+										'=#######===########',
+										'=########==########',
+										'=##====##=======##',
+										'=##====##======##',
+										'=##====##=====##',
+										'=##====##====##',
+										'=##====##===##',
+									    '=########==########',
+										'=#######===########',
+										'',
+										'####################'
+										);
+
+
+
+
+
+
+
+
+word[1] = new Array();
+word[1]['x'] = new Array();
+word[1]['y'] = new Array();
+word[1]['pattern'] = new Array(	
+										'####=#==#=###',
+										'#==#=##=#=#==#',
+										'####=#=##=#==#',
+										'#==#=#==#=#==#',
+										'#==#=#==#=###'
+									);
+
+
+
+
+
+
+
+
+
+
+word[2] = new Array();
+word[2]['x'] = new Array();
+word[2]['y'] = new Array();
+word[2]['pattern'] = new Array(
+										'########################',
+										'#======================#',
+										'#==##################==#',
+										'#==##################==#',
+										'#=======##===##====##==#',
+										'#======##====##====##==#',
+										'#=====##=====########==#',
+										'#====##======########==#',
+										'#===##=======##========#',
+									    '#==############========#',
+										'#==############========#',
+										'#======================#',										
+										'########################'										
+										);
+
+
+
+
+
+word[3] = new Array();
+word[3]['x'] = new Array();
+word[3]['y'] = new Array();
+word[3]['pattern'] = new Array(
+										'####=####=####=####=####=#==#=#####=####',
+										'#==#=#==#=#====#====#====##=#===#===#',
+										'####=###==####=####=####=#=##===#===####',
+										'#====#==#=#=======#=#====#==#===#======#',
+										'#====#==#=####=####=####=#==#===#===####' 
+									);
+
+
+
+word[4] = new Array();
+word[4]['x'] = new Array();
+word[4]['y'] = new Array();
+word[4]['pattern'] =	 new Array(
+										'==######====######====######====######==##====##',
+										'=########==########==########==########==##==##',
+										'=##====##==##====##==##====##==##====##===####',
+										'=##====##==##====##==##====##==##====##====##',
+										'=########==########==########==########====##',
+										'=########==#######===#######===########====##',
+										'=##====##==##==###===##==###===##====##====##',
+									    '=##====##==##===###==##===###==##====##====##',
+										'=##====##==##===####=##===####=##====##====##'
+										);
+
+
+
+
+
+
+
+
+word[5] = new Array();
+word[5]['x'] = new Array();
+word[5]['y'] = new Array();
+word[5]['pattern'] = new Array(
+										'####===###==#==#=#####=#===#=#======###==####=#===#=####',
+										'#==#===#==#=#==#===#===##=##=#======#==#=#====##=##=#==#',
+										'####===#==#=####===#===#=#=#=#======#==#=###==#=#=#=#==#',
+										'#==#===#==#=#==#===#===#===#=#======#==#=#====#===#=#==#',
+										'#==#===###==#==#===#===#===#=####===###==####=#===#=####' 
+									);
+
+
+
+
+
+
+
+
+
+
+word[6] = new Array();
+word[6]['x'] = new Array();
+word[6]['y'] = new Array();
+word[6]['pattern'] = new Array(
+										'#===#=####===####=####=####===#==#=#===#=####=####=####=#=####=#====####=#===#=###',
+										'#===#=#======#==#=#==#=#======#==#==#=#==#==#=#====#==#=#=#====#====#==#=##==#=#==#',
+										'#=#=#=####===####=###==####===####===#===####=####=###==#=####=#====####=#=#=#=#==#',
+										'##=##=#======#==#=#==#=#======#==#===#===#====#====#==#=#====#=#====#==#=#==##=#==#',
+										'#===#=####===#==#=#==#=####===#==#===#===#====####=#==#=#=####=####=#==#=#===#=###' 
+									);
+
+
+
+
+var seperator = 5;
+var pixelW = parseInt(d.styleSheets[0].rules[0].style.width)+seperator;
+var pixelH = parseInt(d.styleSheets[0].rules[0].style.height)+seperator;
+
+var startT = 240;
+var orgT = startT;
+var startL = 300;
+var orgL = startL;
+
+var maxEl = 300;
+
+var currActive=-1;
+
+var vinkelInc = 0.10;
+var animDuration = 5000;
+
+var center, currWord;
+
+var words = word.length;
+
+var firstAnim = true;
+
+var startTime = false;
+var endTime = false;
+var startTime2 = false;
+var endTime2 = false;
+
+var one = false;
+
+
+
+
+
+
+
+//----------------------------------------------------------
+// CREATE THE PIXELS AND MAKE THE FUNCTIONS
+//----------------------------------------------------------
+
+var pixel = new Array();
+
+function setup()	{
+
+
+
+
+	var dummyel = d.createElement('div');
+	dummyel.className="letter";
+
+
+
+	for(var i=0; i<maxEl; i++)	{
+
+	pixel[i] = dummyel.cloneNode();
+	pixel[i].id = "id"+i;
+	pixel[i].style.left = -100;
+	pixel[i].style.top = -100;
+	cont.appendChild(pixel[i]);
+
+
+
+		for(var w = 0; w<words; w++)	{
+
+			pixel[i][w] = new Array();
+			pixel[i][w]= {
+			rotationFunc		: false,
+			endFunc				: false,
+			timer					: false,
+			startX				: false,
+			endX					: false,
+			vinkel				: 1.5,
+			dist					: false,
+			rot					: false,
+			secX					: false,
+			secY					: false
+			}
+
+		}
+
+	}
+
+
+
+
+
+//	FIRST FUNCTION
+
+for(var i=0; i<maxEl; i++)	{
+
+		for(var w = 0; w<words; w++)	{
+						
+							pixel[i][w].rotationFunc = function(el)	{	
+
+
+
+						pixel[el][currWord].vinkel+=vinkelInc;
+
+						pixel[el][currWord].rot = Math.sin(pixel[el][currWord].vinkel); 
+
+
+if(!startTime)	startTime = new Date().valueOf();
+if(!endTime)	endTime = startTime + animDuration;
+
+var currTime = new Date().valueOf();
+
+
+
+
+/* ORIGINAL CALC
+			var percent = (currTime - startTime) / (endTime - startTime);
+			var tmp = ((percent * (pixel[el][currWord].endX - pixel[el][currWord].startX)) + pixel[el][currWord].startX);
+			var pos = Math.atan(tmp);
+*/
+
+
+
+
+
+											if(currTime>=endTime)	{
+
+
+												var e = currWord+1;
+											
+													if(e!=words) makeword(e);
+
+													else	{
+
+
+
+
+													clearTimeout(pixel[el][currWord].timer);
+
+													
+
+													if(el<192)	{pixel[el][currWord].endFunc(el);}
+
+													return;
+
+													}
+
+
+												
+											}		
+
+											else	{
+						
+											pixel[el].style.left=Math.tan((Math.atan(((currTime-startTime)/(endTime-startTime)*(pixel[el][currWord].endX-pixel[el][currWord].startX))+pixel[el][currWord].startX))/pixel[el][currWord].rot)-pixel[el][currWord].dist+220;
+
+		
+
+											}
+												
+												
+											pixel[el][currWord].timer = setTimeout('pixel['+el+'][currWord].rotationFunc('+el+')',10);
+												
+
+										
+
+
+
+							}
+
+
+//END FUNCTION
+
+							pixel[i][w].endFunc = function(el)	{	
+
+
+						
+
+if(!startTime2)	startTime2 = new Date().valueOf();
+if(!endTime2)		endTime2 = startTime2 + 3000;
+if(!pixel[el][currWord].secX)	pixel[el][currWord].secX = pixel[el].offsetLeft;
+if(!pixel[el][currWord].secY)	pixel[el][currWord].secY = pixel[el].offsetTop;
+
+var currTime = new Date().valueOf();
+
+
+			var percent = (currTime - startTime2) / (endTime2 - startTime2);
+
+
+													pixel[el].style.left = ((percent * ((word[currWord]['x'][el]-270) - pixel[el][currWord].secX)) + pixel[el][currWord].secX); 
+													pixel[el].style.top = ((percent * ((word[currWord]['y'][el]-50) - pixel[el][currWord].secY)) + pixel[el][currWord].secY);
+
+if(currTime<endTime2)	 {
+		
+		pixel[el][currWord].timer = setTimeout('pixel['+el+'][currWord].endFunc('+el+')',10);
+
+}
+
+else	{
+
+													pixel[el].style.left = word[currWord]['x'][el]-270; 
+													pixel[el].style.top = word[currWord]['y'][el]-50;
+
+
+													if(!one)	{
+													
+													one = true;
+
+													startTime = false;
+													endTime = false;
+
+													
+
+													setTimeout(fade,4000);
+
+
+													}
+
+
+
+
+}
+
+							}
+
+//END END FUNCTION
+
+
+
+		}
+
+
+}
+
+
+
+generateWords();
+
+}
+
+var fadeDur = 2000;
+
+function fade()	{
+
+pic.style.visibility = "visible";
+
+
+if(!startTime)	startTime = new Date().valueOf();
+if(!endTime)	endTime = startTime + fadeDur;
+
+var currTime = new Date().valueOf();
+
+
+			var percent = (currTime - startTime) / (endTime - startTime);
+			var opa = ((percent * (100 - 0)) + 0);
+
+
+pic.style.filter = "alpha(opacity=" + opa + ", style=0)";
+
+
+if(opa>=100) {
+
+
+d.body.removeChild(cont);
+
+setTimeout('location.href="../metaball/metaball.html"',10500);
+
+
+
+}
+
+
+else	setTimeout(fade, 10);
+
+
+
+}
+
+
+
+
+
+
+
+
+//-------------------------------------------------------
+// GENERATE WORD ARRAYS
+//-------------------------------------------------------
+
+
+function generateWords()	{
+
+
+for(var w = 0; w < words; w++)	{
+
+
+
+	for(var x=0; x<word[w]['pattern'].length;x++)	{
+
+
+		for(var i=0; i<word[w]['pattern'][x].length;i++)	{
+
+			if(word[w]['pattern'][x].charAt(i)=="#")	{
+			
+			currActive+=1;
+
+			word[w]['x'][currActive] = startL + pixelW;	
+			word[w]['y'][currActive] = startT;
+
+	
+			}
+
+		startL+=pixelW;
+	
+		}
+
+		startT+=pixelH;
+		startL = orgL;
+
+	
+	}
+
+
+
+startT = orgT;
+
+
+
+word[w]['center'] = (word[w]['x'][currActive]+word[w]['x'][0])/2
+
+word[w]['curractive'] = currActive;
+
+
+	for(var i = 0; i<=currActive; i++)	{
+
+	pixel[i][w].dist = ((word[w]['center'] + (word[w]['center']-word[w]['x'][i])-word[w]['x'][currActive])/2);
+
+	pixel[i][w].endX = (Math.tan(pixel[i][w].vinkel)*pixel[i][w].dist+word[w]['center'])*2;
+
+	pixel[i][w].startX =	 (Math.tan(pixel[i][w].vinkel)*pixel[i][w].dist+word[w]['center'])*-2;
+
+	}
+
+currActive = -1;
+
+
+
+}
+
+
+makeword(0);
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+//-------------------------------------------------------
+// MAKE THE WORD
+//-------------------------------------------------------
+
+
+function makeword(what)	{
+
+
+center = word[what]['center'];
+
+
+for(var i = 0; i<word[what]['x'].length; i++)	 {
+
+pixel[i].style.left= pixel[i][what].startX;
+
+pixel[i].style.top = Math.cos(pixel[i][what].vinkel+0.5)*pixel[i][what].dist+word[what]['y'][i];
+
+
+
+}
+
+
+currWord = what;
+
+
+
+if(firstAnim)	{	firstAnim = false; anim();	}
+
+
+else	{
+
+	startTime = false;
+	endTime = false;
+
+	oldActive = word[currWord-1]['curractive'];
+
+	theActive = word[currWord]['curractive'];
+
+	delete word[currWord-1];
+
+	if(theActive - oldActive>0) {
+
+
+
+		for(var i=oldActive; i<=theActive; i++)	{
+
+
+
+		clearTimeout(	pixel[i][currWord-1].timer);
+
+		pixel[i][currWord-1] = void 0;
+
+		pixel[i][currWord].rotationFunc(i);
+
+		}
+	}
+
+
+	else {
+
+		for(var i = theActive+1; i<=oldActive;i++)	{
+
+		clearTimeout(	pixel[i][currWord-1].timer);
+
+		pixel[i][currWord-1] = void 0;
+		
+		pixel[i].style.left =-100;
+		pixel[i].style.top =-100;	
+
+		}
+	
+	}
+
+
+
+}
+
+
+
+
+}
+
+
+
+
+
+
+
+
+//-------------------------------------------------------
+// ANIMATE IT
+//-------------------------------------------------------
+
+function anim()	{
+
+parent.MM_controlShockwave('music','','GotoFrame','1')
+
+//parent.go();
+
+
+for(var i=0; i<=word[currWord]['curractive']; i++)	{
+
+
+pixel[i][currWord].rotationFunc(i);
+
+
+
+
+}
+
+
+
+
+}
+
+
+window.onload = setup;
+
+
+
+
+</script>
+
+
+</head>
+
+<body bgcolor="#000000" scroll="no">
+
+<div id="cont" style="position:absolute; top:0px; left:0px; width:640px; height:480px; overflow:hidden;"></div>
+
+
+<div id="pic" style="position:absolute; top:0px; left:0px; width:640px; height:480px; overflow:hidden; visibility:hidden;"><img src="../gfx/intro.jpg" width="640" height="480" border=0 alt=""></div>
+
+
+</body>
+</html>

@@ -1,0 +1,369 @@
+
+<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
+
+<html>
+<head>
+<title> intro </title>
+<meta name="generator" content="www.thomasevensen.org">
+<meta name="author" content="Thomas Evensen">
+<meta name="keywords" content="">
+<meta name="description" content="">
+
+
+<META http-equiv="Page-Enter" CONTENT="RevealTrans(Duration=1,Transition=12)">
+
+<style type="text/css">
+
+.obj	{
+
+position: absolute;
+overflow: hidden;
+width: 2px;
+height: 2px;
+background: #ffffff
+}
+
+</style>
+
+<script language="javascript">
+
+var d = document;
+
+
+
+var seperator = 2;
+var pixelW = parseInt(d.styleSheets[0].rules[0].style.width)+seperator;
+var pixelH = parseInt(d.styleSheets[0].rules[0].style.height)+seperator;
+
+var startT = 200;
+var startL = 200;
+var orgL = startL;
+
+var currZ = 200;
+var orgZ = currZ;
+
+var maxEl = 250;
+var currActive=-1;
+
+var pixel = new Array();
+var x = new Array();
+var y = new Array();
+var z = new Array();
+var kubz = new Array(20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,-20,-20,-20,-20,-20,-20,-20,-20,-20,-20,-20,-20,-20,-20,-20,-20,10,0,-10,10,0,-10,10,0,-10,10,0,-10,10,0,-10,10,0,-10);
+
+var kubx = new Array(-20,-10,0,10,20,-20,-10,0,10,20,-20,-20,-20,20,20,20,-20,-10,0,10,20,-20,-10,0,10,20,-20,-20,-20,20,20,20,-20,-20,-20,20,20,20,20,20,20,-20,-20,-20);
+var kuby = new Array(-20,-20,-20,-20,-20,20,20,20,20,20,-10,0,10,-10,0,10,-20,-20,-20,-20,-20,20,20,20,20,20,-10,0,10,-10,0,10,-20,-20,-20,-20,-20,-20,20,20,20,20,20,20);
+
+var a  = 0;
+var b  = 0;
+var c  = 0;
+var xcenter  = 300;
+var ycenter  = 300;
+var zcenter  = 100;
+var size  = 0;
+var color = 0;
+var count=0;
+var maxcount = 2000;
+var act=0;
+var xcount=0, al=0;
+
+var bo = false;
+
+
+var startTime, endTime, currTime = false;
+
+function setup()	{
+
+
+	var dummyel = d.createElement('div');
+	dummyel.className="obj";
+
+	for(var i=0; i<maxEl; i++)	{
+
+	pixel[i] = dummyel.cloneNode();
+	pixel[i].id = "id"+i;
+	pixel[i].style.left = -100
+	pixel[i].style.top = -100
+	d.body.appendChild(pixel[i]);
+
+	pixel[i][0] = new Array();
+		pixel[i][0] = {
+		rotationFunc	: false,
+		timer					: false,
+		x						: false,
+    	y						: false,
+		z						: false,
+		newx				: false,
+    	newy				: false,
+		newz				: false,
+		dx					: false,
+		dy					: false,
+		dz					: false
+
+		}
+
+	}
+
+
+//	FIRST FUNCTION
+
+for(var i=0; i<maxEl; i++)	{
+
+
+						
+							pixel[i][0].rotationFunc = function(el)	{	
+
+
+							if(!startTime)	startTime = new Date().valueOf();
+							if(!endTime)	endTime = startTime + 60000;
+							currTime = new Date().valueOf();
+
+							count++;
+							if(count>maxcount)morph(el)
+						
+
+					    	a+=.04;
+							b+=.07;
+							c+=.07;
+					
+
+
+							if(currTime>=startTime+10000)	{
+
+
+							if(currTime>=endTime)	{
+
+							location.href="../water/water.html";
+
+
+							}
+
+
+							if(currTime>=startTime+50000) {
+							
+							bo = false;
+							
+
+							
+							}
+							else if(currTime>=startTime+30000)	{
+
+							
+							bo = true;
+
+
+
+							}
+
+							else	{
+							xcount++;
+							if(xcount==currActive){al+=2;ycenter+=Math.sin(al)*10;xcount=0;}
+
+
+							}
+
+				}
+
+						
+
+							
+
+
+																
+		//x-ax
+		rx1 = pixel[el][0].x;
+		ry1 = pixel[el][0].y * Math.cos((a/180)*Math.PI) - pixel[el][0].z * Math.sin((a/180)*Math.PI);
+		rz1 = pixel[el][0].y * Math.sin((a/180)*Math.PI) + pixel[el][0].z * Math.cos((a/180)*Math.PI);
+		// y-ax
+		rx2 = rx1 * Math.cos((b/180)*Math.PI) + rz1 * Math.sin((b/180)*Math.PI);
+		ry2 = ry1;
+		rz2 = rx1 * -Math.sin((b/180)*Math.PI) + rz1 * Math.cos((b/180)*Math.PI);
+		// z-ax
+		rx3 = rx2 * Math.cos((c/180)*Math.PI) - ry2 * Math.sin((c/180)*Math.PI);
+		ry3 = rx2 * Math.sin((c/180)*Math.PI) + ry2 * Math.cos((c/180)*Math.PI);
+		rz3 = rz2;
+
+									pers=(600/(rz3+300)); 
+									
+		     						pixel[el].style.zIndex = rz3*-1;
+									
+									size = rz3*-1/6
+									if(size<2)size=2;
+									pixel[el].style.width = 	size;
+									pixel[el].style.height = 	size;
+         
+									pixel[el].style.left = 	rx3*pers + xcenter - (size/2);
+									pixel[el].style.top = 	ry3*pers + ycenter - (size/2);
+	
+						    		color = (100+(rz3*-1 * zcenter*.02))
+									if(color<10)color=10;
+									pixel[el].style.backgroundColor =
+									'rgb(' + color*2 + ',' +  color*.5 + ',' +  color  + ')';
+
+									pixel[el][0].timer = setTimeout('pixel['+el+'][0].rotationFunc('+el+')',10);
+							
+							}
+
+
+
+}
+
+make();
+
+}
+
+function morph(el){
+
+	
+	pixel[el][0].dx = (pixel[el][0].newx - pixel[el][0].x);
+	pixel[el][0].dy = (pixel[el][0].newy - pixel[el][0].y);
+	pixel[el][0].dz = (pixel[el][0].newz - pixel[el][0].z);
+
+
+if(!bo)	{
+
+	pixel[el][0].x += pixel[el][0].dx/10;
+ 	pixel[el][0].y += pixel[el][0].dy/10;
+ 	pixel[el][0].z += pixel[el][0].dz/10;
+
+
+}
+
+else	{
+
+
+	pixel[el][0].x += pixel[el][0].dx*1.9;
+ 	pixel[el][0].y += pixel[el][0].dy*1.9;
+ 	pixel[el][0].z += pixel[el][0].dz*1.9;
+
+
+}
+
+	if(count>maxcount*2)change(act);
+
+
+}
+
+function change(ch){
+
+if(ch==0){
+count=0;
+makestar();
+maxcount=3000;
+act=1;
+}
+if(ch==1){
+count=0;
+makecube();
+maxcount=3000;
+act=0;
+}
+
+}
+
+function makestar(){
+
+for(var i=0;i<currActive;i++) {
+pixel[i][0].newx =-50 + Math.random()*100;
+pixel[i][0].newy =-50 + Math.random()*100;
+pixel[i][0].newz =-50 + Math.random()*100;
+}
+}
+
+function makecube(){
+
+for(var i=0;i<currActive;i++)
+  { 
+	pixel[i][0].newx = kubx[i];
+	pixel[i][0].newy = kuby[i];
+	pixel[i][0].newz = kubz[i];
+  }
+  
+}
+
+function make()	{
+
+currActive =44;
+
+for(var i=0;i<currActive;i++) {
+
+x[i] =-50 + Math.random()*100;
+y[i] =-50 + Math.random()*100;
+z[i] =-50 + Math.random()*100;
+}
+
+for(var i=0;i<currActive;i++) {
+
+d.body.appendChild(pixel[i]); 
+
+pixel[i][0].x = x[i];
+pixel[i][0].y = y[i];
+pixel[i][0].z = z[i];
+  }
+ makecube();
+ anim();
+}
+
+function makeword(word)	{
+
+
+
+	for(var x=0; x<word.length;x++)	{
+
+
+		for(var i=0; i<word[x].length;i++)	{
+
+			if(word[x].charAt(i)=="#")	{
+			
+			currActive+=1;
+
+			pixel[currActive].style.top = startT;
+			pixel[currActive].style.left = startL + pixelW;
+			pixel[currActive].style.zIndex = currZ;
+
+			d.body.appendChild(pixel[currActive]); 
+
+
+			currZ -=1;
+
+			}
+
+		startL+=pixelW;
+	
+		}
+
+		currZ = orgZ;
+		startT+=pixelH;
+		startL = orgL;
+	
+	}
+
+	for(var i = 0; i<currActive; i++) {
+
+	pixel[i][0].x = pixel[i][0].left
+	pixel[i][0].y = pixel[i][0].top
+	
+	}
+
+
+
+}
+
+
+function anim()	{
+
+for(var i=0; i<currActive; i++)	{
+
+pixel[i][0].rotationFunc(i);
+
+ }
+}
+
+</script>
+</head>
+<body bgcolor="#000000" onload="setup()" scroll="no" topmargin="0" leftmargin="0">
+
+
+
+</body>
+</html>

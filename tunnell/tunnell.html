@@ -1,0 +1,297 @@
+<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
+
+<html>
+<head>
+<title> tunnell </title>
+
+<meta http-equiv="Page-Enter" content="blendTrans(Duration=2)">
+
+<style type="text/css">
+
+.pixel	{
+
+position: absolute;
+overflow: hidden;
+width: 3px;
+height:3px;
+
+}
+
+</style>
+
+<script language="javascript">
+
+var d = document;
+
+
+var maxcirc = 25;
+
+var thediam = 400;
+
+
+var startTime,startTime2,endTime,endTime0,endTime2,currTime = false;
+
+var one = true;
+var one2 = true;
+
+
+var circle = new Array;
+
+for(var i=0;i<maxcirc;i++)	 {
+
+
+
+
+
+circle[i] =	{
+
+diamx			: thediam,
+diamy			: thediam,
+pixels			: 52,
+inc				: .12,
+timer				: false,
+func				: false,
+ang				: 0,
+cont				: false
+
+}
+
+
+
+
+thediam -=16;
+
+
+}
+
+
+
+var currActive = 0;
+var a = 0;
+var col = 255;
+var z = 500;
+
+
+
+//----------------------------------------------------------
+// CREATE THE PIXELS
+//----------------------------------------------------------
+
+var pixel = new Array();
+
+function setup()	{
+
+
+	var dummyel = d.createElement('div');
+	dummyel.className="pixel";
+
+
+for(var x = 0; x<circle.length;x++)	{
+
+
+
+	var contel = d.createElement('div');
+	contel.style.position = "absolute";
+	contel.style.zIndex = z;
+	cont.appendChild(contel);
+	circle[x].cont = contel;
+
+	for(var i=0; i<circle[x].pixels; i++)	{
+
+	a +=circle[x].inc;
+
+	pixel[currActive] = dummyel.cloneNode();
+	pixel[currActive].style.left = Math.sin(a)*circle[x].diamx+320;
+	pixel[currActive].style.top = Math.cos(a)*circle[x].diamy+240;
+	pixel[currActive].style.background = 'rgb('+col+','+col+','+0+')';
+
+	
+
+	contel.appendChild(pixel[currActive]);
+
+currActive +=1;
+
+	}
+
+col -= 10;
+z -=1;
+//a = 0;
+
+
+		circle[x].func = function(id)	{	
+
+
+if(!startTime)	startTime = new Date().valueOf();
+if(!endTime)	endTime = startTime + 10000;
+if(!endTime0)	endTime0 = startTime + 25000;
+
+var currTime = new Date().valueOf();
+
+
+if(currTime>=endTime0)	{
+
+
+if(one2)	{
+
+one2=false;
+
+fade();
+
+}
+
+
+
+
+}
+
+
+else if(currTime>=endTime)	{
+
+
+if(one)	{
+
+one=false;
+go();
+}
+
+
+}
+
+
+
+circle[id].ang+=0.04;
+
+
+circle[id].cont.style.left = Math.cos(circle[id].ang)*circle[id].diamx;
+circle[id].cont.style.top = Math.sin(circle[id].ang)*circle[id].diamy;
+
+
+
+
+		}
+
+
+
+}
+
+
+
+
+
+
+for(var i = 0; i<circle.length; i++)	{
+
+
+anim(i);
+
+
+}
+
+
+
+
+}
+
+
+
+
+
+function fade()	{
+
+
+
+
+
+pic.style.visibility = "visible";
+
+
+if(!startTime2)	startTime2 = new Date().valueOf();
+if(!endTime2)	endTime2 = startTime2 + 2000;
+
+var currTime = new Date().valueOf();
+
+
+			var percent = (currTime - startTime2) / (endTime2 - startTime2);
+			var opa = percent * 100;
+
+
+pic.style.filter = "alpha(opacity=" + opa + ", style=0)";
+
+
+if(opa>=100) {
+
+
+d.body.removeChild(cont);
+
+setTimeout('location.href="../outro/outro.html"',6000);
+
+
+
+}
+
+
+else	setTimeout(fade, 10);
+
+
+
+}
+
+
+
+
+
+function anim(el)	{
+
+
+
+circle[el].timer = setInterval('circle['+el+'].func('+el+')',15);
+
+
+
+}
+
+
+
+
+function go()	{
+
+
+for(var i = 0; i<circle.length; i++)	{
+
+setTimeout('circle['+i+'].diamx = 250;circle['+i+'].diamy = 50;anim('+i+')',100*i);
+
+
+}
+
+
+
+}
+
+
+
+window.onload=setup;
+
+</script>
+
+
+</head>
+
+<body bgcolor="#333333" scroll="no" onclick="go();">
+
+<div id="cont" style="position:absolute; top:0px; left:0px; width:640px; height:480px; overflow:hidden; background:#000000"></div>
+
+
+<div id="pic" style="position:absolute; top:0px; left:0px; width:640px; height:480px; overflow:hidden; visibility:hidden;">
+
+
+<img src="../gfx/smoke.jpg" width="640" height="480" border=0 alt="">
+
+
+
+</div>
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,328 @@
+
+<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
+
+<html>
+<head>
+<title> intro </title>
+<meta name="generator" content="www.thomasevensen.org">
+<meta name="author" content="Thomas Evensen">
+<meta name="keywords" content="">
+<meta name="description" content="">
+<meta http-equiv="Page-Enter" content="blendTrans(Duration=2)">
+
+
+<style type="text/css">
+
+.letter	{
+
+position: absolute;
+overflow: hidden;
+width: 2px;
+height: 2px;
+background: #ffffff;
+
+
+}
+
+
+#scroll	{
+
+position:absolute; 
+top: 300px; 
+left: 650px;
+font-family: arial, verdana;
+font-size: 15pt;
+font-weight: bold;
+color: #eeeeee;
+
+width: 6700px;
+
+
+
+}
+
+
+
+</style>
+
+<script language="javascript">
+
+var d = document;
+
+var maxEl = 250;
+
+var currActive=-1;
+
+var pixel = new Array();
+var x  = new Array();
+var y  = new Array();
+var z  = new Array();
+var a  = 0;
+var b  = 0;
+var c  = 0;
+var xcenter  = 300;
+var ycenter  = 300;
+var zcenter  = 100;
+var count=0;
+var maxcount=2000;
+
+
+
+var startTime,endTime,currTime = false;
+var endX;
+
+
+
+//----------------------------------------------------------
+// CREATE THE PIXELS AND MAKE THE FUNCTIONS
+//----------------------------------------------------------
+
+
+
+function setup()	{
+
+
+	var dummyel = d.createElement('div');
+	dummyel.className="letter";
+
+	for(var i=0; i<maxEl; i++)	{
+
+	pixel[i] = dummyel.cloneNode();
+	pixel[i].id = "id"+i;
+	pixel[i].style.left = -100
+	pixel[i].style.top = -100
+	d.body.appendChild(pixel[i]);
+
+
+	pixel[i][0] = new Array();
+		pixel[i][0] = {
+		rotationFunc	: false,
+		timer					: false,
+		startX				: false,
+		endX				: false,
+		view				: false, //false = front | true = back
+		vinkel				: 0,
+		dist					: false,
+		rot					: false,
+    	maxColor			: false,
+		minColor			: false,
+		x						: false,
+    	y						: false,
+		z						: false
+		}
+
+	}
+
+//	FIRST FUNCTION
+
+for(var i=0; i<maxEl; i++)	{
+
+
+						
+							pixel[i][0].rotationFunc = function(el)	{	
+						
+							obj = eval(pixel[el].id);
+
+						//a+=.01;
+
+						//b+=.05;
+					//c+=.02;
+
+							count++;
+							if(count<maxcount)pixel[el][0].z-=10;
+							if(count>maxcount && count<maxcount*2)b+=90/maxcount;
+							if(count>maxcount*2 && count<maxcount*3)pixel[el][0].x+=10;
+							if(count>maxcount*3 && count<maxcount*4)b+=90/maxcount;
+							if(count>maxcount*4 && count<maxcount*5)b-=90/maxcount;
+							if(count>maxcount*5 && count<maxcount*6)pixel[el][0].x-=10;
+							if(count>maxcount*6 && count<maxcount*7)b-=90/maxcount;
+							if(count>maxcount*7)count=0;
+
+							
+
+		//x-ax
+		rx1 = pixel[el][0].x;
+		ry1 = pixel[el][0].y * Math.cos((a/180)*Math.PI) - pixel[el][0].z * Math.sin((a/180)*Math.PI);
+		rz1 = pixel[el][0].y * Math.sin((a/180)*Math.PI) + pixel[el][0].z * Math.cos((a/180)*Math.PI);
+		// y-ax
+		rx2 = rx1 * Math.cos((b/180)*Math.PI) + rz1 * Math.sin((b/180)*Math.PI);
+		ry2 = ry1;
+		rz2 = rx1 * -Math.sin((b/180)*Math.PI) + rz1 * Math.cos((b/180)*Math.PI);
+		// z-ax
+		rx3 = rx2 * Math.cos((c/180)*Math.PI) - ry2 * Math.sin((c/180)*Math.PI);
+		ry3 = rx2 * Math.sin((c/180)*Math.PI) + ry2 * Math.cos((c/180)*Math.PI);
+		rz3 = rz2;
+
+							      	pers=(600/(rz3+300)); 
+									
+									pixel[el].style.left = 	rx3*pers + xcenter;
+									pixel[el].style.top = 	ry3*pers + ycenter;
+
+	
+									pixel[el].style.zIndex = rz3*-1;
+									
+									if(rz3<-100 || rz3>100 ){
+									 pixel[el][0].x=-100+(Math.random()*200);
+									 pixel[el][0].y=-100+(Math.random()*200);
+									 if(rz3<-100)pixel[el][0].z=100;
+									 else pixel[el][0].z=-100;
+										}
+									if(rx3<-100 || rx3>100 ){
+									 pixel[el][0].z=-100+(Math.random()*200);
+									 pixel[el][0].y=-100+(Math.random()*200);
+									 if(rx3<-100)pixel[el][0].x=100;
+									 else pixel[el][0].x=-100;
+										}
+									if(ry3<-100 || ry3>100 ){
+									 pixel[el][0].x=-100+(Math.random()*200);
+									 pixel[el][0].z=-100+(Math.random()*200);
+									 if(ry3<-100)pixel[el][0].y=100;
+									 else pixel[el][0].y=-100;
+										}
+
+					
+									pixel[el].style.backgroundColor =
+									'rgb(' + (170+(rz3*-1 + zcenter/20)) + ',' +  (170+(rz3*-1 + zcenter/20))  + ',' +  (170+(rz3*-1 + zcenter/20))  + ')';
+
+     								pixel[el][0].timer = setTimeout('pixel['+el+'][0].rotationFunc('+el+')',10);
+
+
+							}
+
+
+}
+
+
+make();
+
+
+}
+
+
+
+//-------------------------------------------------------
+// MAKE THE WORD
+//-------------------------------------------------------
+
+
+function make()	{
+
+
+currActive = 40;
+
+for(var i=0;i<=currActive;i++) {
+
+//			pixel[i].style.top = 100+(i*20);
+//			pixel[i].style.left = 100+(i*20);
+//			pixel[i].style.zIndex = currZ;
+
+d.body.appendChild(pixel[i]); 
+
+center = (pixel[i].offsetLeft+pixel[0].offsetLeft)/2
+pixel[i][0].endX = center + (center-pixel[i].offsetLeft);
+pixel[i][0].startX = pixel[i].offsetLeft;
+pixel[i][0].dist = ((pixel[i][0].endX-pixel[i][0].startX)/2)
+pixel[i][0].x = -100 + Math.random()*200;
+pixel[i][0].y = -100 + Math.random()*200;
+pixel[i][0].z = -100 + Math.random()*200;
+
+
+}
+
+anim();
+
+}
+
+//-------------------------------------------------------
+// ANIMATE IT
+//-------------------------------------------------------
+
+function anim()	{
+
+
+
+for(var i=0; i<=currActive; i++)	{
+
+
+pixel[i][0].rotationFunc(i);
+
+
+
+}
+
+
+endX = (document.getElementById('scroll').offsetWidth+50)*(-1)
+
+
+setInterval(scroll,10);
+
+
+
+
+}
+
+
+var scrollDuration = 55000;
+
+var a = 0;
+
+function scroll()	{
+
+
+if(!startTime)	startTime = new Date().valueOf();
+if(!endTime)	endTime = startTime + scrollDuration;
+
+var currTime = new Date().valueOf();
+
+
+			var percent = (currTime - startTime) / (endTime - startTime);
+			var x = ((percent * (endX - 650)) + 650);
+
+
+if(currTime>=endTime)	{
+
+
+
+location.href="hi.html"
+
+
+
+}
+
+else	{
+document.getElementById('scroll').style.left = x;
+
+
+a+=0.1;
+
+document.getElementById('scroll').style.top = Math.sin(a)*100+250;
+
+}
+
+}
+
+
+
+
+</script>
+</head>
+<body bgcolor="#000000" onload="setup()" scroll="no">
+
+
+
+
+
+<div id="scroll">
+
+THIS WAS "ARRAY", A 100% PURE DHTML DEMO FROM DRAFTINGZUP & ZYBERPUNX. AT THE MOST, 1375 LAYERS WAS ANIMATED...APROX. 300 WAS THE PREVIOUS RECORD. CREDITS AS FOLLOW... NELIUS: CODE/IDEA/GFX/LAYOUT | MONOLOC: CODE/GFX | POPCORE: GFX | GLOOMWING: MUSIC. WE GREET ALL OUR INSPIRATORS. WE ALSO BLESS HAUJOBB/EXCESS/KVASIGEN/NOCTURNAL/KOLERA/YAPHAN/MOONDREAMERS ++ ... AND ME (NELIUS) WOULD LIKE TO SEND BIG UPS TO KUSMA FOR HIS INTERPOLATION WORKSHOP AND #SCENE.NO. DON'T BELIVE THE PROPAGANDA. NORWEGIAN SCHOOLS SUCKS! HYPERISLAND FOREVER!
+
+</div>
+
+
+
+
+
+
+
+</body>
+</html>

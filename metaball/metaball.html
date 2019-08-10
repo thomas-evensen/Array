@@ -1,0 +1,292 @@
+
+
+
+<html>
+<head>
+<title> New Document </title>
+
+
+<meta http-equiv="Page-Enter" content="blendTrans(Duration=2)">
+
+<style type="text/css">
+
+.meta	 {
+
+filter:light();
+position:absolute; 
+top:0px; 
+left:0px; 
+width:640px; 
+height:480px; 
+background:#ffffff;
+
+}
+
+
+.chng	{
+
+visibility:hidden; 
+position:absolute; 
+top:0px; 
+left:0px; 
+width:640px; 
+height:480px; 
+background: #ffffff;
+
+}
+
+
+</style>
+
+<script language="javascript">
+
+var timer0 = 15000;		// time to zoom in the metaballs and make them orbit..
+var timer1 = 5000;			// extra time to orbit before change
+var timer2 = 7500;			// time to change glow to 35
+var timer3 = 5000;			// extra time to orbit with new glow
+var timer4 = 5000;			// time to remove glow from picture
+var timer5 = 17500;		// extra time to showoff nice dhtml effect
+var timer6 = 7500;			// time to show the picture
+
+
+
+var start = 1;
+
+var mainGlow = 1000;
+
+var startTime,endTime,currTime,el = false;
+var endTime0,endTime1,endTime2,endTime3,endTime4,endTime5,endTime6,endTime7 = false;
+
+var maxdim		=	new Array(35,25,25,25,50,50,50,75,75,75);
+var maxglow		=	new Array(35,10,10,10,15,15,15,20,20,20);
+var inc				=	new Array(.8,.9,.2,.3,.4,.5,.11,.12,.13,.14);
+var angle			=  new Array(11,0, 1, 2, 3, 4, 5, 6, 7, 25) 
+var meta			=	new Array();
+
+window.onload = init;
+
+
+
+
+function init()	{
+
+
+el = box.filters.Light;
+
+el.addPoint(320, 240, mainGlow, 211, 215, 218, 100);
+
+for(var i = 0; i<10;i++)	 {
+
+meta[i] = {
+
+maxDiam			: maxdim[i],
+inc					: inc[i],
+angle					: angle[i],
+maxGlow			: maxglow[i],
+currGlow			: maxglow[i]
+
+}
+
+
+el.addPoint(345, 240, 0, 211, 215, 218, 100);
+
+}
+
+
+
+
+startTime = new Date().valueOf();
+orgStart = startTime;
+
+endTime0	= startTime	+ timer0;
+endTime1	= endTime0	+ timer1;
+endTime2	= endTime1	+ timer2;
+endTime3	= endTime2	+ timer3;
+endTime4	= endTime3	+ timer4;
+endTime5	= endTime4	+ timer5;
+endTime6	= endTime5	+ timer6;
+
+if(!endTime)	endTime	= endTime0;
+
+go();
+
+
+
+}
+
+
+
+
+
+function go()	{
+
+startTime = new Date().valueOf();
+
+if(endTime==endTime0)		thetimer = setInterval(func1,10);
+
+if(endTime==endTime2)		thetimer = setInterval(func2,10);
+
+if(endTime==endTime4)		thetimer = setInterval(func3,10);
+
+}
+
+
+
+
+function func1()	{
+
+	var currTime = new Date().valueOf();
+
+		for(var i = start; i<10;i++)	 {
+
+			meta[i].angle	+= meta[i].inc;
+
+			var percent	= (currTime - startTime) / (endTime - startTime);
+			
+			var pos			= (percent * meta[i].maxDiam);
+			var glow		= (percent * meta[i].maxGlow);
+
+			
+	
+			if(currTime>=endTime)	{
+
+				pos			= meta[i].maxDiam; 
+				glow			= meta[i].maxGlow;
+				meta[i].currGlow = meta[i].maxGlow;
+
+			}
+
+			if(currTime>=endTime1)	 {endTime=endTime2; clearInterval(thetimer); go();}
+			else	el.moveLight(i, Math.cos(meta[i].angle)*pos+345,  Math.sin(meta[i].angle)*pos+240,glow, true)
+
+		}
+
+}
+
+
+
+function func2()	{
+
+var currTime = new Date().valueOf();
+
+
+for(var i = start; i<10;i++)	 {
+
+			meta[i].angle	+= meta[i].inc;
+
+			var percent	= (currTime - startTime) / (endTime - startTime);
+			
+			var glow = ((percent * (35 - meta[i].currGlow)) + meta[i].currGlow);
+
+		if(currTime>=endTime2)	 var glow = 35;
+
+		if(currTime>=endTime3)	 {meta[i].currGlow = 35; endTime=endTime4; clearInterval(thetimer);go();}
+		else	el.moveLight(i, Math.cos(meta[i].angle)*meta[i].maxDiam+345,  Math.sin(meta[i].angle)*meta[i].maxDiam+240,glow, true);
+
+		}
+
+}
+
+function func3()	{
+
+var currTime = new Date().valueOf();
+
+for(var i = start; i<10;i++)	 {
+
+if(mainGlow)	{
+		if(mainGlow>0)	{
+
+			var percent	= (currTime - startTime) / (endTime - startTime);
+			
+			mainGlow = ((percent * (-1000)) + 1000);
+
+			el.moveLight(0, 345,  240, mainGlow, true);
+
+		}
+
+		else if(mainGlow<=0)	 {
+
+
+		start = 0;
+		mainGlow = false;
+
+
+		el.changeColor(2, 255, 0, 0, true)
+		el.changeColor(4, 0, 255, 0, true)
+		el.changeColor(6, 0, 0, 255, true)
+		el.changeColor(8, 150, 150, 150, true)
+
+
+		}
+
+}
+
+
+meta[i].angle	+= meta[i].inc;
+
+if(currTime>=endTime5) {clearInterval(thetimer); func4(); return;}
+else	el.moveLight(i, Math.cos(meta[i].angle)*meta[i].maxDiam+345,  Math.sin(meta[i].angle)*meta[i].maxDiam+240,meta[i].currGlow, true);
+
+}
+
+
+}
+
+
+function func4()	{
+
+
+    cont.filters[0].enabled = true;
+    cont.filters[0].Apply();
+
+        change.style.visibility="visible"; 
+		box.style.visibility="hidden";
+
+    	cont.filters[0].Play();
+
+thetimer = setInterval(end, 10);
+
+}
+
+function end()	{
+
+
+
+var currTime = new Date().valueOf();
+
+if(currTime>=endTime6) {
+
+
+clearInterval(thetimer); 
+
+el.clear();
+
+location.href="../kube/kube.html"
+
+return;
+}
+
+}
+
+
+</script>
+
+
+</head>
+
+<body bgcolor="#000000"  leftmargin="0" topmargin="0" text="white">
+
+
+<div id="cont" style="position:absolute; top: 0px; left: 0px; width: 640px; height:480px;  filter:progid:DXImageTransform.Microsoft.Pixelate(MaxSquare=50, Duration=3, Enabled=false) ">
+
+<div id="box" class="meta">
+<img src="galaxy.jpg" width="640" height="480" border=0 alt=""></div>
+
+
+<div id="change" class="chng">
+<img src="zpgfx_popcore.gif" width="640" height="480" border=0 alt=""></div>
+
+</div>
+
+</body>
+</html>

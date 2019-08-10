@@ -1,0 +1,93 @@
+<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
+
+<html>
+<head>
+<title> water </title>
+
+<meta http-equiv="Page-Enter" content="blendTrans(Duration=2)">
+
+
+<style type="text/css">
+
+</style>
+
+<script language="javascript">
+
+
+var startTime,endTime,currTime = false;
+
+var animDuration = 20000;
+
+
+var i=0;
+
+function start(){
+
+if(!startTime)	startTime = new Date().valueOf();
+if(!endTime)	endTime = startTime + animDuration;
+
+
+var currTime = new Date().valueOf();
+
+
+
+if(currTime>=endTime)	{
+
+
+location.href="../tunnell/tunnell.html";
+
+
+
+}
+
+
+else if(currTime>=endTime-10000)	{
+
+
+
+bot.style.top = 0;
+
+pic.src = "../gfx/wnz.gif";
+pic.width = 700;
+pic.height = 550;
+
+
+}
+
+	bot.filters.item(0).Phase+=5;
+
+
+}
+
+
+
+
+</script>
+
+
+</head>
+
+<body bgcolor="#000000" onload="timer = setInterval('start()',1)">
+
+
+<div style="position:absolute; top:0px; left:0px; width:640px; height:480px; overflow:hidden">
+
+<div id="top" style="left: -24px; position: absolute; top: 0px">
+
+<img src="pop_top.gif" width="700" height="234" border=0 alt="">
+
+</div>
+
+
+<div id="bot" style="left: -30px; position: absolute; top: 234px; z-index: 13;filter:progid:DXImageTransform.Microsoft.Wave(Add='false', LightStrength=5, Phase=0, Strength=5,  Freq=5)">
+
+<img id="pic" src="pop_bot.gif" width="700" height="246" border=0 alt="">
+
+</div>
+
+</div>
+
+
+
+</body>
+</html>
